@@ -1,5 +1,5 @@
 import { domIDS } from "./constants"
-import { Student } from "./Student"
+import { Student } from "./class/Student"
 
 export const $id = (id: domIDS) => {
   const element = document.getElementById(id)
@@ -17,5 +17,13 @@ export const renderStudent = (student: Student, table: HTMLTableElement) => {
     `<tr><td>Nivel Educativo:</td><td>${student.educationalLevel}</td></tr>`,
   ].join('')
 
+  table.appendChild(body)
+}
+
+export const renderStats = (student: Student, table: HTMLTableElement) => {
+  const body = document.createElement('tbody')
+  body.innerHTML = [
+    `<tr><td>Certificados:</td><td>${student.certificatesAmount}</td></tr>`,
+  ].join('')
   table.appendChild(body)
 }
