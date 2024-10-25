@@ -36,19 +36,32 @@ export class Renderer {
     table.appendChild(body)
     return this
   }
+  
 
-  public courses(student: Student, table: HTMLTableElement): this {
-    const body = document.createElement('tbody')
+  public courses(student: Student, table: HTMLTableElement, filter?: string): this {
+    let courses = student.courses
+    let body = table.querySelector('tbody')
+    
+    if (filter){
+      courses = courses
+        .filter( course => course.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase()))
+    }
+    if (!body){
+      body = document.createElement('tbody')
+      table.appendChild(body)
+    }
+
     body.innerHTML = this.joinHTML(
-      ...student.courses
+      ...courses
         .map( course => this.createRow(
           course.name, 
           course.duration.toString(), 
-          course.mark.toString(), 
+          course.mark.toString(),
+          course.passed? 'Sí':'No',
           course.startDate.toString()
       ))
     )
-    table.appendChild(body)
+    
     return this
   }
 }

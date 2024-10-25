@@ -9,9 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const courses = [
     new Course('Estructuras de Datos', 20, 90, true, 2023),
     new Course('Arquitectura de Software', 40, 30, false, 2022),
-    new Course('Computaciön', 70, 100, true, 2023),
+    new Course('Computación', 70, 100, true, 2023),
   ]
-
   const student = new Student('Óscar', 'Martí­nez Vicente', 'avatar.png', 20, EducationalLevel.HIGH_SCHOOL, courses)
 
   const studentTable = <HTMLTableElement>$id(domIDS.studentTable)
@@ -23,4 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     .student(student, studentTable)
     .stats(student, statsTable)
     .courses(student, coursesTable)
+
+  const coursesFilter = <HTMLInputElement>$id(domIDS.coursesinput)
+  const coursesButton = <HTMLInputElement>$id(domIDS.coursesButton)
+
+  coursesButton.onclick = () => {
+    render.courses(student, coursesTable, coursesFilter.value)
+  }
 })
