@@ -6,10 +6,13 @@ export class Renderer {
     return html.join('')
   }
 
-  private createRow(...contents: string[]): string {
+  private createRow(...contents: string[][]): string {
     const html = contents
       .map( content => {
-        return `<td>${content}</td>`
+        if (content[1]){
+          return `<td ${content[1]}>${content[0]}</td>`
+        }
+        else return `<td>${content}</td>`
       })
     return `<tr>${this.joinHTML(...html)}</tr>` 
   }
@@ -17,11 +20,11 @@ export class Renderer {
   public student(student: Student, table: HTMLTableElement): this {
     const body = document.createElement('tbody')
     body.innerHTML = this.joinHTML(
-      `<tr><td colspan=2><img src="../public/${student.avatar}"/></td></tr>`,
-      this.createRow('Nombre:', student.name),
-      this.createRow('Apellidos:', student.surnames),
-      this.createRow('Edad:', student.age.toString()),
-      this.createRow('Nivel Educativo:', student.educationalLevel),
+      this.createRow([`<img src="../public/${student.avatar}"/>`, 'colspan=2']),
+      this.createRow(['Nombre:'], [student.name]),
+      this.createRow(['Apellidos:'], [student.surnames]),
+      this.createRow(['Edad:'], [student.age.toString()]),
+      this.createRow(['Nivel Educativo:'], [student.educationalLevel]),
     )
   
     table.appendChild(body)
@@ -31,7 +34,7 @@ export class Renderer {
   public stats(student: Student, table: HTMLTableElement): this {
     const body = document.createElement('tbody')
     body.innerHTML = [
-      this.createRow('Certificados:', student.certificatesAmount.toString()),
+      this.createRow(['Certificados:'], [student.certificatesAmount.toString()]),
     ].join('')
     table.appendChild(body)
     return this
@@ -54,11 +57,11 @@ export class Renderer {
     body.innerHTML = this.joinHTML(
       ...courses
         .map( course => this.createRow(
-          course.name, 
-          course.duration.toString(), 
-          course.mark.toString(),
-          course.passed? 'Sí':'No',
-          course.startDate.toString()
+          [course.name], 
+          [course.duration.toString()], 
+          [course.mark.toString(), course.mark > 50? 'class=green':'class=red'],
+          [course.passed? 'Sí':'No'],
+          [course.startDate.toString()]
       ))
     )
     
