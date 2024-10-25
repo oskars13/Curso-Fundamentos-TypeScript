@@ -1,11 +1,11 @@
 import { domIDS, EducationalLevel } from "./constants.js"
 import { Student } from "./class/Student.js"
-import { $id, renderStats, renderStudent } from "./utils.js"
+import { $id } from "./utils.js"
 import { Course } from "./class/Course.js"
+import { Renderer } from "./class/Renderer.js"
 
 
 document.addEventListener('DOMContentLoaded', () => {
-
   const courses = [
     new Course('Estructuras de Datos', 20, 90, true, 2023),
     new Course('Arquitectura de Software', 40, 30, false, 2022),
@@ -13,9 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
   ]
 
   const student = new Student('Óscar', 'Martí­nez Vicente', 'avatar.png', 20, EducationalLevel.HIGH_SCHOOL, courses)
+
   const studentTable = <HTMLTableElement>$id(domIDS.studentTable)
   const statsTable = <HTMLTableElement>$id(domIDS.statsTable)
+  const coursesTable = <HTMLTableElement>$id(domIDS.coursesTable)
 
-  renderStudent(student, studentTable)
-  renderStats(student, statsTable)
+  const render = new Renderer()
+  render
+    .student(student, studentTable)
+    .stats(student, statsTable)
+    .courses(student, coursesTable)
 })
